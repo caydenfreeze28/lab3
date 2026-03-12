@@ -86,13 +86,64 @@ end top_basys3;
 architecture top_basys3_arch of top_basys3 is 
   
 	-- declare components
-
+component thunderbird_fsm is
+    port(
+        i_clk, i_reset  : in    std_logic;
+        i_left, i_right : in    std_logic;
+        o_lights_L      : out   std_logic_vector(2 downto 0); -- LA is LSB
+        o_lights_R      : out   std_logic_vector(2 downto 0)  -- RA is LSB
+        );
+end component thunderbird_fsm;
   
+component clock_divider is 
+    generic (constant k_DIV : natural := 2);
+    port( i_clk : in std_logic;
+          i_reset : in std_logic;
+          o_clk : out std_logic
+        );
+  
+end component clock_divider;
+
+    -- signals
+    signal w_R : std_logic;
+    signal w_L : std_logic;
+    signal w_lightsL : std_logic_vector(2 downto 0);
+    signal w_lightsR : std_logic_vector(2 downto 0);
+    signal w_tempclk : std_logic;
+    
 begin
 	-- PORT MAPS ----------------------------------------
-
+    
+    clk_div_inst : clock_divider
+        generic map(
+                    k_DIV => 12500000
+                    )
+        port map (
+                i_clk => clk,
+                i_reset => btnL,
+                o_clk => w_tempclk
+                );
+    
+    thunderbird_inst: thunderbird_fsm
+    port map(
+            i_reset => btnR,
+            i_clk => w_tempclk, -- FPGA clock
+            i_left => w_L,
+            i_right => w_R,
+            o_lights_L => w_lightsL,
+            o_lights_R => w_lightsR
+            );
 	
+	w_L <= sw(15);
+    w_R <= sw(0);
 	
+	led(0) <= w_lightsR(2);
+	led(1) <= w_lightsR(1);
+	led(2) <= w_lightsR(0);
+	
+	led(13) <= w_lightsL(0);
+	led(14) <= w_lightsL(1);
+	led(15) <= w_lightsL(2);
 	-- CONCURRENT STATEMENTS ----------------------------
 	
 	-- ground unused LEDs

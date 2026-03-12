@@ -79,7 +79,7 @@ architecture test_bench of thunderbird_fsm_tb is
 	signal w_current : std_logic_vector(2 downto 0) := "000";
 	signal w_next : std_logic_vector(2 downto 0) := "000";
 	-- constants
-	constant k_clk_period : time := 10ns;
+	constant k_clk_period : time := 10 ns;
 	
 begin
 	-- PORT MAPS ----------------------------------------

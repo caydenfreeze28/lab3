@@ -132,23 +132,33 @@ begin
             (f_Q(2) AND f_Q(1) AND NOT f_Q(0));
             
     -- Output Logic
-    o_lights_L <= "000" when f_Q = "000" else
-              "111" when f_Q = "001" else
-              "000" when f_Q = "010" else
-              "000" when f_Q = "011" else
-              "000" when f_Q = "100" else
-              "001" when f_Q = "101" else
-              "011" when f_Q = "110" else
-              "111";
+       
+     o_lights_L(0) <= (f_Q(2) AND NOT f_Q(1) AND f_Q(0)) OR         
+                    (f_Q(2) AND f_Q(1) AND NOT f_Q(0)) OR 
+                    (f_Q(2) AND f_Q(1) AND f_Q(0)) OR  
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+                    
+     o_lights_L(1) <= (f_Q(2) AND f_Q(1) AND NOT f_Q(0)) OR
+                    (f_Q(2) AND f_Q(1) AND f_Q(0)) OR 
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+                    
+     O_lights_L(2) <= (f_Q(2) AND f_Q(1) AND f_Q(0)) OR 
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+                   
+     O_lights_R(0) <= (NOT f_Q(2) AND f_Q(1) AND NOT f_Q(0)) OR 
+                    (NOT f_Q(2) AND f_Q(1) AND f_Q(0)) OR 
+                    (f_Q(2) AND NOT f_Q(1) AND NOT f_Q(0)) OR 
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+     
+     O_lights_R(1) <= (NOT f_Q(2) AND f_Q(1) AND f_Q(0)) OR 
+                    (f_Q(2) AND NOT f_Q(1) AND NOT f_Q(0)) OR 
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+              
+     O_lights_R(2) <= (f_Q(2) AND NOT f_Q(1) AND NOT f_Q(0)) OR 
+                    (NOT f_Q(2) AND NOT f_Q(1) AND f_Q(0));
+                    
 
-    o_lights_R <= "000" when f_Q = "000" else
-                  "111" when f_Q = "001" else
-                  "001" when f_Q = "010" else
-                  "011" when f_Q = "011" else
-                  "111" when f_Q = "100" else
-                  "000" when f_Q = "101" else
-                  "000" when f_Q = "110" else
-                  "000";
+    
     ---------------------------------------------------------------------------------
 	
 	-- PROCESSES --------------------------------------------------------------------

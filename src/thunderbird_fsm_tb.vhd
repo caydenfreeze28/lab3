@@ -163,6 +163,10 @@ begin
 	   w_right <= '1'; wait for k_clk_period;
 	       assert w_right_turn = "111" report "bad R zero" severity failure;
 	       assert w_left_turn = "111" report "bad R zero" severity failure;
+	   w_left <= '0';
+	   w_right <= '0'; wait for k_clk_period;
+	       assert w_right_turn = "000" report "bad R zero" severity failure;
+	       assert w_left_turn = "000" report "bad L zero" severity failure;
 	end process;
 	-----------------------------------------------------	
 	
